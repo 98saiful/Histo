@@ -77,7 +77,7 @@ This project uses **Expo Router** (file-based routing) located in the `app/` dir
 
 ## ⚡ State Management
 
-We use **Redux Toolkit (RTK)** for global state management.
+We use **Redux Toolkit (RTK)** for global state management, enhanced with **Redux Persist** for data longevity.
 
 ### Why RTK Query instead of RxJS Epics?
 
@@ -87,3 +87,22 @@ We deliberately chose **RTK Query** over `redux-observable` (RxJS Epics) for the
 2.  **Maintainability & Focus**: While RxJS is powerful for complex event streams, for standard REST API interactions, RTK Query provides a more streamlined and maintainable solution that keeps the codebase focused on business logic rather than stream orchestration.
 3.  **Built-in Best Practices**: RTK Query automatically handles deduping requests, optimistic updates, and cache invalidation, which would require manual implementation with Epics.
 4.  **Modern Redux Standard**: It is the officially recommended approach by the Redux team for async logic.
+
+---
+
+## 💾 Data Persistence
+
+To ensure user data (like visited places) remains available after the app is closed, we use **Redux Persist** with **MMKV**.
+
+### Why MMKV?
+
+We use [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) as the storage engine because:
+
+- **Speed**: It is significantly faster than standard `AsyncStorage` because it uses a direct C++ binding to a memory-mapped key-value store.
+- **Synchronous Execution**: Operations are synchronous, avoiding the overhead of async bridge calls.
+- **Reliability**: It is widely used in high-performance production applications.
+
+### Configuration
+
+- **Storage Wrapper**: See `store/mmkv-storage.ts` for the Redux Persist compatible wrapper.
+- **Persisted Slices**: The `places` slice is currently configured for persistence in `store/index.ts`.

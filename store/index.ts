@@ -1,18 +1,46 @@
-import { configureStore } from "@reduxjs/toolkit";
-import placesReducer from "./slices/places-slice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import { placesApi } from "../services/places-api";
+import { mmkvStorage } from "./mmkv-storage";
+import placesReducer from "./slices/places-slice";
+
+/**
+ * Root reducer combining persisted places slice and API reducer
+ */
+const rootReducer = combineReducers({
+  places: persistReducer(
+    {
+      key: "places",
+      storage: mmkvStorage,
+    },
+    placesReducer
+  ),
+  [placesApi.reducerPath]: placesApi.reducer,
+});
 
 /**
  * Redux store configuration
  */
-const store = configureStore({
-  reducer: {
-    places: placesReducer,
-    [placesApi.reducerPath]: placesApi.reducer,
-  },
+export const store = configureStore({
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(placesApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(placesApi.middleware),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
