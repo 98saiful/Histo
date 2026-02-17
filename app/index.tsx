@@ -18,7 +18,7 @@ import { useGetHistoricalPlacesInfiniteQuery } from "../services/places-api";
 import { styles } from "../styles/home";
 import { LayoutStyles } from "../theme";
 import { Place } from "../types";
-import { getRandomInt } from "../utils";
+import { formatErrorMessage, getRandomInt } from "../utils";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -82,15 +82,7 @@ export default function HomeScreen() {
   }
 
   if (error) {
-    return (
-      <ErrorMessage
-        message={
-          "message" in error && error.message
-            ? error.message
-            : "Failed to fetch places"
-        }
-      />
-    );
+    return <ErrorMessage message={formatErrorMessage(error)} />;
   }
 
   return (

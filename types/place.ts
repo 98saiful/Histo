@@ -3,7 +3,7 @@
  */
 
 export interface Place {
-  id: string | number;
+  id: string;
   name: string;
   country: string;
   description: string;

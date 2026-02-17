@@ -8,14 +8,13 @@ import React from "react";
 import { ScrollView, Switch, Text, View } from "react-native";
 
 import { calendar, location, map } from "../../assets";
-import { ErrorMessage, Loading } from "../../components/common";
-import Seperator from "../../components/common/Seperator";
-import { Colors } from "../../constants/colors";
+import { ErrorMessage, Loading, Separator } from "../../components/common";
+import { Colors } from "../../constants";
 import { useVisitedStatus } from "../../hooks";
 import { useGetHistoricalPlacesDetailsQuery } from "../../services/places-api";
 import { styles } from "../../styles/details";
 import { Typography } from "../../theme";
-import { getImageUrl } from "../../utils";
+import { formatErrorMessage, getImageUrl } from "../../utils";
 
 export default function DetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -38,11 +37,13 @@ export default function DetailsScreen() {
   }
 
   if (error || !place) {
-    const errorMessage =
-      error && "message" in error
-        ? (error as { message: string }).message
-        : "Failed to fetch place details";
-    return <ErrorMessage message={errorMessage} />;
+    return (
+      <ErrorMessage
+        message={
+          error ? formatErrorMessage(error) : "Failed to fetch place details"
+        }
+      />
+    );
   }
 
   const visited = isVisited(place.id);
@@ -61,7 +62,7 @@ export default function DetailsScreen() {
         <Text style={[Typography.heading1, Typography.inverse]}>
           {place.name}
         </Text>
-        <Seperator color={Colors.textSecondary} />
+        <Separator color={Colors.textSecondary} />
 
         <View style={styles.row}>
           <Image source={location} style={styles.iconSmall} />
@@ -75,7 +76,7 @@ export default function DetailsScreen() {
           </View>
         )}
 
-        <Seperator color={Colors.textSecondary} />
+        <Separator color={Colors.textSecondary} />
 
         <View style={styles.visitCard}>
           <View style={styles.row}>

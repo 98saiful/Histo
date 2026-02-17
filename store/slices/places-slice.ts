@@ -1,23 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PlacesState {
-  visited: (string | number)[];
+  visited: Record<string, boolean>;
 }
 
 const initialState: PlacesState = {
-  visited: [],
+  visited: {},
 };
 
 const placesSlice = createSlice({
   name: "places",
   initialState,
   reducers: {
-    toggleVisited: (state, action: PayloadAction<string | number>) => {
+    toggleVisited: (state, action: PayloadAction<string>) => {
       const id = action.payload;
-      if (state.visited.includes(id)) {
-        state.visited = state.visited.filter((placeId) => placeId !== id);
+      if (state.visited[id]) {
+        delete state.visited[id];
       } else {
-        state.visited.push(id);
+        state.visited[id] = true;
       }
     },
   },

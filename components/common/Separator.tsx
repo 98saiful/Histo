@@ -4,18 +4,14 @@
  */
 
 import React from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import { Colors } from "../../constants/colors";
 import { Spacing } from "../../constants/spacing";
 
 interface SeparatorProps {
-  /** Height/thickness of the separator line (default: StyleSheet.hairlineWidth) */
   height?: number;
-  /** Color of the separator line (default: Colors.divider) */
   color?: string;
-  /** Vertical margin above and below the separator (default: Spacing.md) */
   marginVertical?: number;
-  /** Additional styles to apply to the separator */
   style?: ViewStyle;
 }
 

@@ -2,12 +2,13 @@
  * Custom hook for managing visited status of places
  */
 
+import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { toggleVisited } from "../store/slices/places-slice";
 
 /**
  * Hook to manage visited status
- * @returns Object with visited array, check function, and toggle function
+ * @returns Object with check function and toggle function
  */
 export const useVisitedStatus = () => {
   const dispatch = useAppDispatch();
@@ -16,19 +17,24 @@ export const useVisitedStatus = () => {
   /**
    * Check if a place is visited
    */
-  const isVisited = (id: string | number): boolean => {
-    return visited.includes(id);
-  };
+  const isVisited = useCallback(
+    (id: string): boolean => {
+      return !!visited[id];
+    },
+    [visited],
+  );
 
   /**
    * Toggle visited status for a place
    */
-  const toggle = (id: string | number) => {
-    dispatch(toggleVisited(id));
-  };
+  const toggle = useCallback(
+    (id: string) => {
+      dispatch(toggleVisited(id));
+    },
+    [dispatch],
+  );
 
   return {
-    visited,
     isVisited,
     toggle,
   };

@@ -4,14 +4,15 @@
  */
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Place } from "../types/place";
-import { ApiResponse, PlacesResponse } from "../types/api";
 import { API } from "../constants/api";
+import { ApiResponse, PlacesResponse } from "../types/api";
+import { Place } from "../types/place";
 
 export const placesApi = createApi({
   reducerPath: "placesApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API.BASE_URL,
+    timeout: API.TIMEOUT,
   }),
   tagTypes: ["Places"],
   endpoints: (builder) => ({
@@ -38,7 +39,7 @@ export const placesApi = createApi({
       transformResponse: (response: ApiResponse): PlacesResponse => {
         return {
           places: response.results.map((item) => ({
-            id: item.id_no || 0,
+            id: String(item.id_no ?? ""),
             name: item.name_en || "Unknown Place",
             description: "",
             image: item.main_image_url?.url || null,
@@ -66,7 +67,7 @@ export const placesApi = createApi({
           throw new Error("Place not found");
         }
         return {
-          id: item.id_no || "",
+          id: String(item.id_no ?? ""),
           name: item.name_en || "Unknown Place",
           description: item.short_description_en || "",
           image: item.main_image_url?.url || null,

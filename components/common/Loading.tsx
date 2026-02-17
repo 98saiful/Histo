@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import { LayoutStyles } from "../../theme";
 
@@ -18,10 +18,17 @@ export const Loading: React.FC<LoadingProps> = ({
   color = Colors.primary,
 }) => {
   return (
-    <View style={[LayoutStyles.center, { backgroundColor: Colors.surface }]}>
+    <View style={styles.container}>
       <ActivityIndicator size={size} color={color} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    ...LayoutStyles.center,
+    backgroundColor: Colors.surface,
+  },
+});
 
 export default Loading;

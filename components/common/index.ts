@@ -2,8 +2,8 @@
  * Common components barrel export
  */
 
-export { Loading } from "./Loading";
 export { ErrorMessage } from "./ErrorMessage";
 export { FabButton } from "./FabButton";
+export { Loading } from "./Loading";
 export { PlaceCard } from "./PlaceCard";
-export { Separator } from "./Seperator";
+export { Separator } from "./Separator";
