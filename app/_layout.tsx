@@ -8,6 +8,15 @@ import { persistor, store } from "../store";
 /**
  * Root layout - wraps the app with Redux Provider, PersistGate and SafeAreaProvider
  */
+
+export const unstable_settings = {
+  /**
+   * Ensure any route can link back to `/`
+   * https://docs.expo.dev/router/advanced/router-settings/
+   */
+  initialRouteName: "index",
+};
+
 export default function RootLayout() {
   return (
     <Provider store={store}>
